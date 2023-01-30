@@ -14,4 +14,6 @@ RUN ["mvn","clean","install","-T","2C","-DskipTests=true"]
 
 FROM tomcat:8.5.43-jdk8
 
-COPY --from=maven_builder /app/wc_admin/target/wc-admin.war /usr/local/tomcat/webapps
+ENV HOME=/app
+
+COPY --from=maven_builder $HOME/wc_admin/target/wc-admin.war /usr/local/tomcat/webapps
