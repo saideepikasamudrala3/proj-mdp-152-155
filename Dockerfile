@@ -14,4 +14,4 @@ RUN ["mvn","clean","install","-T","2C","-DskipTests=true"]
 
 FROM tomcat:8.5.43-jdk8
 
-COPY ./target/*.war /usr/local/tomcat/webapps/
+COPY ./target/WebAppCal-1.4.war /usr/local/tomcat/webapps/
