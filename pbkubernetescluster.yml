@@ -1,6 +1,6 @@
 ---
 - name: Playbook to install & setup Kubernetes workstation
-  hosts: 
+  hosts: tomcat-server
   become: yes
 
   vars:
