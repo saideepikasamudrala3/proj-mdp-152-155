@@ -1,0 +1,90 @@
+---
+- name: Playbook to install & setup Kubernetes workstation
+  hosts: 
+  become: yes
+
+  vars:
+      kops_version: "v1.25.3"
+      kubectl_version: "v1.26.0"
+      kops_download_path: "https://github.com/kubernetes/kops/releases/download/{{ kops_version }}/kops-linux-amd64"
+      kubectl_download_path: "https://dl.k8s.io/release/{{ kubectl_version }}/bin/linux/amd64/kubectl"
+      ssh_key_filename: id_rsa.pub
+    
+
+
+  tasks:
+   - name: crate a directory
+     become: yes
+     file:
+      path: "/opt/awscliv2"
+      state: directory
+      mode: 0755
+
+   - name: Install unzip
+     yum:
+       name: unzip
+       state: present
+
+
+   - name : Download and unzip amazon cli software
+     become: yes
+     tags: downloadawscli
+     unarchive:
+      src: "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip"
+      dest: "/opt/awscliv2/"
+      mode: 0755
+      remote_src: yes
+     register: "awsclidownload"
+
+  
+   - name: Install awscli 
+     become: yes
+     shell:
+      "./install --update"
+     args:
+      chdir: "/opt/awscliv2/aws"
+
+
+   - name: Download Kops binaries
+     get_url:
+      url: "{{ kops_download_path }}"
+      dest: /usr/local/bin/kops
+      owner: root
+      group: root
+      mode: 0755
+      force: yes
+     # TODO Add hash check
+     when: ansible_os_family != 'Darwin'
+     become: true
+
+   - name: Download Kubectl binaries
+     get_url:
+      url: "{{ kubectl_download_path }}"
+      dest: /usr/local/bin/kubectl
+      owner: root
+      group: root
+      mode: 0755
+      force: yes
+     # TODO Add hash check
+     when: ansible_os_family != 'Darwin'
+     become: true
+
+   - name: genereate SSH key
+     openssh_keypair:
+        path: "~/.ssh/{{ssh_key_filename}}"
+        type: rsa
+        state: present
+        force: no
+
+   - name: create cluster using kops
+     command: 
+         "/usr/local/bin/kops create cluster --state=s3://k8s-trail-javacalci --zones=eu-west-2a,eu-west-2b --node-count=2 --name=javacalci.k8s.local --yes --ssh-pub-key /home/centos/.ssh/id_rsa.pub"
+
+   - name: validate cluster using kops
+     command: 
+         "/usr/local/bin/kops validate cluster --state=s3://k8s-trail-javacalci --name=javacalci.k8s.local"
+
+
+...
+
+
