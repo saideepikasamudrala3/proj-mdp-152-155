@@ -78,11 +78,11 @@
 
    - name: create cluster using kops
      command: 
-         "/usr/local/bin/kops create cluster --state=s3://k8s-trail-javacalci --zones=eu-west-2a,eu-west-2b --node-count=2 --name=javacalci.k8s.local --yes --ssh-public-key /home/centos/.ssh/id_rsa.pub"
+         "/usr/local/bin/kops create cluster --state=s3://k8s-trial-javacalci --zones=eu-west-2a,eu-west-2b --node-count=2 --name=javacalci.k8s.local --yes --ssh-public-key /home/centos/.ssh/id_rsa.pub"
 
    - name: validate cluster using kops
      command: 
-         "/usr/local/bin/kops validate cluster --state=s3://k8s-trail-javacalci --name=javacalci.k8s.local"
+         "/usr/local/bin/kops validate cluster --state=s3://k8s-trial-javacalci --name=javacalci.k8s.local"
 
 
 ...
