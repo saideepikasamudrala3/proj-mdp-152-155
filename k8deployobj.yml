@@ -1,0 +1,24 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: javacalci-deployment
+  labels:
+	app: javacalculator
+spec:
+  replicas: 2
+  selector:
+    matchlabels:
+      app: javacalculator
+template:
+  metadata:
+    labels:
+      app: javacalculator
+  spec:
+    containers:
+    - name: javacalciapp
+	  image: calculator_java:latest
+	  ports:
+ 	  - containerPort:8080
+...
+    
