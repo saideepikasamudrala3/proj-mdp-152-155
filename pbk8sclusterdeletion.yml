@@ -1,0 +1,14 @@
+---
+- name: Playbook to delete Kubernetes cluster setup
+  hosts: tomcat-server
+  become: yes
+
+  tasks:
+    - name: validate cluster using kops
+      command: 
+         "/usr/local/bin/kops validate cluster --state=s3://k8s-trial-javacalci --name=javacalci.k8s.local"
+
+    - name: validate cluster using kops
+      command: 
+         "/usr/local/bin/kops delete cluster --state=s3://k8s-trial-javacalci --name=javacalci.k8s.local --yes"
+...
