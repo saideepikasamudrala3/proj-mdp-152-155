@@ -9,7 +9,7 @@ spec:
   selector:
     app: javacalculator
   ports:
-  - name: apache tomcat
+  - name: apachetomcat
     port: 8080
     targetPort: 8080
     protocol: TCP
