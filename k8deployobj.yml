@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: javacalci-deployment
+  name: tomcat
   labels:
-	app: javacalculator
+	app: tomcat
 spec:
   replicas: 2
   selector:
     matchlabels:
-      app: javacalculator
+      app: tomcat
 template:
   metadata:
     labels:
-      app: javacalculator
+      app: tomcat
   spec:
     containers:
-    - name: javacalciapp
+    - name: tomcat
 	  image: calculator_java:latest
 	  ports:
  	  - containerPort:8080
@@ -23,14 +23,14 @@ template:
 apiVersion: v1
 kind: Service
 metadata:
-  name: javacalculator
+  name: tomcat
   namespace: devops-tools
 spec:
   type: LoadBalancer
   selector:
-    app: javacalculator
+    app: tomcat
   ports:
-  - name: apachetomcat
+  - name: tomcat
     port: 8080
     targetPort: 8080
     protocol: TCP
