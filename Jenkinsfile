@@ -61,8 +61,8 @@ pipeline{
 		  stage('deploy') {
                     steps {
                               
-                           
-                            sudo kubectl apply -f k8deployobj.yml -n devops-tools
+                           kubernetesDeploy(configs: "k8deployobj.yml", kubeconfigId: "k8_config")
+                            
                          }
                     }
 	}
