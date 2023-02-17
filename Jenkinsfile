@@ -61,8 +61,8 @@ pipeline{
 		  stage('deploy') {
                     steps {
                               
-                           sudo kubectl --kubeconfig ${WORKSPACE}/k8_config config set-context --current --user=jenkins-admin
-                            sudo kubectl apply -f k8deployobj.yml --kubeconfig ${WORKSPACE}/k8_config -n devops-tools
+                           
+                            sudo kubectl apply -f k8deployobj.yml -n devops-tools
                          }
                     }
 	}
