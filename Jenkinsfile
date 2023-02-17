@@ -56,7 +56,7 @@ pipeline{
 	
 	agent  { label 'tomcat-server' }
 	
-	stages {
+	
 		
 		  stage('deploy') {
                     steps {
@@ -65,5 +65,5 @@ pipeline{
                             
                          }
                     }
-	}
+	
 }
