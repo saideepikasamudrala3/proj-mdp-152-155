@@ -46,6 +46,21 @@ pipeline{
 				sh 'docker push deepikasamudrala/calculator_java:latest'
 			}
 		}
+		
+		stage('connecting to K8workstation'){
+                    agent{
+                         label 'tomcat-server'
+                         }
+                     steps{
+                           sh 'ls /usr/local/bin/'
+                           sh 'aws s3 ls'
+                           sh 'kops get cluster --state=s3://k8s-trial-javacalci'
+                           sh 'kubectl apply -f k8deployobj.yml'
+                           sh 'kubectl get pods'
+                           sh 'kubectl get services'
+                       }
+               }       
+        
 	}
 
 	post {
@@ -54,16 +69,6 @@ pipeline{
 		}
 	}
 	
-	agent  { label 'tomcat-server' }
 	
-	
-		
-		  stage('deploy') {
-                    steps {
-                              
-                           kubernetesDeploy(configs: "k8deployobj.yml", kubeconfigId: "k8_config")
-                            
-                         }
-                    }
 	
 }
