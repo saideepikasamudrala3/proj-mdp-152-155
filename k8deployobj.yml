@@ -1,37 +1,40 @@
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: tomcat
-  labels:
-	app: tomcat
+  name: javacalculator
 spec:
   replicas: 2
   selector:
-    matchlabels:
-      app: tomcat
-template:
-  metadata:
-    labels:
-      app: tomcat
-  spec:
-    containers:
-    - name: tomcat
-	  image: calculator_java:latest
-	  ports:
- 	  - containerPort:8080
+    matchLabels:
+      app: javacalculator-app
+      version: latest
+  template:
+    metadata:
+      name: javacalculator-pod
+      labels:
+        app: javacalculator-app
+        version: latest
+    spec:
+      containers:
+      - name: javacalculator-container
+        image: deepikasamudrala/calculator_java:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
 ---
 apiVersion: v1
-kind: Service
+kind: Service 
 metadata:
-  name: tomcat
-  namespace: devops-tools
+  name: javacalculator-svc
+  labels:
+    app: javacalculator-app
 spec:
-  type: LoadBalancer
   selector:
-    app: tomcat
+    app: javacalculator-app
+    version: latest
+  type: NodePort
   ports:
-  - name: tomcat
+  - nodePort: 31113
     port: 8080
     targetPort: 8080
-    protocol: TCP
-    
